@@ -43,8 +43,8 @@ def login() -> (Response, int):
                 'refresh_token': refresh_token,
             }), HTTP_200_OK
 
-    # Caso alguma etapa de autenticação não for bem sucedida, retorna uma resposta JSON com status 401 (Não Autorizado),
-    # contendo a mensagem de erro.
+    # Caso alguma etapa de autenticação não seja bem sucedida, retorna uma resposta JSON com status 401 (Não
+    # Autorizado), contendo a mensagem de erro.
     return jsonify({
         'error': 'Credenciais inválidas.'
     }), HTTP_401_UNAUTHORIZED
