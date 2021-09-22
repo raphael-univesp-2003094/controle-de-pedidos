@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from src.auth import auth_bp
 from src.database import db
 from src.pedidos import pedidos_bp
+from src.spa import spa_bp
 from src.usuarios import usuarios_bp
 
 
@@ -38,6 +39,7 @@ def create_app() -> Flask:
     app.register_blueprint(auth_bp)
     app.register_blueprint(pedidos_bp)
     app.register_blueprint(usuarios_bp)
+    app.register_blueprint(spa_bp)
 
     # Retorna a aplicação Flask.
     return app
