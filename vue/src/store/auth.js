@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-// Define o local de armazenamento onde será salvo o token de autenticação.
-const tokenStorage = localStorage;
-
 // Módulo do estado da aplicação para autenticação.
 const auth = {
   namespaced: true,
@@ -40,7 +37,7 @@ const auth = {
      * @param state
      * @returns {boolean}
      */
-    isAuthenticated: (state) => (state.usuario && state.accessToken),
+    isAuthenticated: (state) => (!!state.usuario && !!state.accessToken),
   },
 
   mutations: {
@@ -63,7 +60,7 @@ const auth = {
     },
 
     /**
-     * Altera o token de acesso e o armazena no local de armazenamento definido.
+     * Altera o token de acesso e o armazena no armazenamento local.
      * @param state
      * @param {string|null} accessToken
      */
@@ -71,9 +68,9 @@ const auth = {
       state.accessToken = accessToken;
 
       if (accessToken) {
-        tokenStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('accessToken', accessToken);
       } else {
-        tokenStorage.removeItem('accessToken');
+        localStorage.removeItem('accessToken');
       }
     },
   },
@@ -86,11 +83,12 @@ const auth = {
      * @returns {Promise<void>}
      */
     async init({ commit, dispatch }) {
-      // Busca o token de acesso no local de armazenamento.
-      const accessToken = tokenStorage.getItem('accessToken');
+      // Busca o token de acesso no armazenamento local.
+      const accessToken = localStorage.getItem('accessToken');
 
       if (accessToken) {
-        // Caso o token esteja definido, carrega o usuário.
+        // Caso o token esteja definido, o salva no estado da aplicação carrega o usuário.
+        commit('setAccessToken', accessToken);
         await dispatch('loadUsuario');
       } else {
         // Caso o token não esteja definido, efetua o logout.
