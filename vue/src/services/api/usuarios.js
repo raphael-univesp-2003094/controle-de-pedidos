@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 /**
  * Módulo de consulta à API referente ao controle de usuários.
  *
@@ -17,7 +19,7 @@ const usuarios = {
    * da entidade.
    * @returns {Promise<{usuarios: object[]}>} Resposta da API.
    */
-  getUsuarios: (filtro = {}) => window.axios.get('/api/usuarios', {
+  getUsuarios: (filtro = {}) => axios.get('/api/usuarios', {
     params: filtro,
   })
     .then((response) => response.data),
@@ -29,7 +31,7 @@ const usuarios = {
    * @param {int|string} id Id do usuário.
    * @returns {Promise<{usuario: object}>} Resposta da API.
    */
-  getUsuario: (id) => window.axios.get(`/api/usuarios/${id}`)
+  getUsuario: (id) => axios.get(`/api/usuarios/${id}`)
     .then((response) => response.data),
 
   /**
@@ -38,7 +40,7 @@ const usuarios = {
    * @param {object} usuario Dados do usuário que será criado.
    * @returns {Promise<{usuario: object}>} Resposta da API.
    */
-  createUsuario: (usuario) => window.axios.post('/api/usuarios', usuario)
+  createUsuario: (usuario) => axios.post('/api/usuarios', usuario)
     .then((response) => response.data),
 
   /**
@@ -47,7 +49,7 @@ const usuarios = {
    * @param {object} usuario Dados do usuário que será alterado.
    * @returns {Promise<{usuario: object}>} Resposta da API.
    */
-  updateUsuario: (usuario) => window.axios.patch(`/api/usuarios/${usuario.id}`, usuario)
+  updateUsuario: (usuario) => axios.patch(`/api/usuarios/${usuario.id}`, usuario)
     .then((response) => response.data),
 
   /**
@@ -56,7 +58,7 @@ const usuarios = {
    * @param {int|string} id Id do usuário.
    * @returns {Promise<{}>} Resposta da API.
    */
-  deleteUsuario: (id) => window.axios.delete(`/api/usuarios/${id}`)
+  deleteUsuario: (id) => axios.delete(`/api/usuarios/${id}`)
     .then((response) => response.data),
 };
 

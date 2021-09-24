@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 /**
  * Tokens de cancelamento para que, quando os comandos getPedidos e getPedidos forem chamados pela
  * segunda vez enquanto a primeira chamada não tiver sido concluída, a primeira chamada possa ser
@@ -32,10 +34,10 @@ const pedidos = {
     if (getPedidosCancelTokenSource) getPedidosCancelTokenSource.cancel();
 
     // Salva o token da chamada atual, visando futuro cancelamento.
-    getPedidosCancelTokenSource = window.axios.CancelToken.source();
+    getPedidosCancelTokenSource = axios.CancelToken.source();
 
     // Faz a requisição.
-    return window.axios.get('/api/pedidos', {
+    return axios.get('/api/pedidos', {
       params: filtro,
       cancelToken: getPedidosCancelTokenSource.token,
     })
@@ -56,10 +58,10 @@ const pedidos = {
     if (getPedidoCancelTokenSource) getPedidoCancelTokenSource.cancel();
 
     // Salva o token da chamada atual, visando futuro cancelamento.
-    getPedidoCancelTokenSource = window.axios.CancelToken.source();
+    getPedidoCancelTokenSource = axios.CancelToken.source();
 
     // Faz a requisição.
-    return window.axios.get(`/api/pedidos/${tipo}/${numero}`, {
+    return axios.get(`/api/pedidos/${tipo}/${numero}`, {
       cancelToken: getPedidoCancelTokenSource.token,
     })
       .then((response) => response.data);
@@ -71,7 +73,7 @@ const pedidos = {
    * @param {object} pedido Dados do pedido que será criado.
    * @returns {Promise<{pedido:object}>} Resposta da API.
    */
-  createPedido: (pedido) => window.axios.post('/api/pedidos', pedido)
+  createPedido: (pedido) => axios.post('/api/pedidos', pedido)
     .then((response) => response.data),
 
   /**
@@ -80,7 +82,7 @@ const pedidos = {
    * @param {{tipo:string, numero:(int|string)}} pedido Dados do pedido que será alterado.
    * @returns {Promise<{pedido: object}>} Resposta da API.
    */
-  updatePedido: (pedido) => window.axios.post(`/api/pedidos/${pedido.tipo}/${pedido.numero}`, pedido)
+  updatePedido: (pedido) => axios.post(`/api/pedidos/${pedido.tipo}/${pedido.numero}`, pedido)
     .then((response) => response.data),
 
   /**
@@ -90,7 +92,7 @@ const pedidos = {
    * @param {int|string} numero Número do pedido.
    * @returns {Promise<{}>} Resposta da API.
    */
-  deletePedido: (tipo, numero) => window.axios.post(`/api/pedidos/${tipo}/${numero}`)
+  deletePedido: (tipo, numero) => axios.post(`/api/pedidos/${tipo}/${numero}`)
     .then((response) => response.data),
 };
 
