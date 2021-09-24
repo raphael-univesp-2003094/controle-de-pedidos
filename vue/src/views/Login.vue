@@ -33,12 +33,19 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
+/**
+ * Página Login.
+ * Página que contém o formulário de login da aplicação.
+ */
 export default {
   name: 'Login',
 
   data() {
     return {
+      // Indicação de que há um comando em execução.
       isBusy: false,
+
+      // Campos do formulário.
       form: {
         email: '',
         senha: '',
@@ -47,25 +54,39 @@ export default {
   },
 
   computed: {
+    // Valores computados provenientes do estado da aplicação.
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
     }),
   },
 
   methods: {
+    // Ações provenientes do estado da aplicação.
     ...mapActions({
       login: 'auth/login',
     }),
 
+    /**
+     * Efetua o login do usuário.
+     *
+     * @returns {Promise<void>}
+     */
     async doLogin() {
+      // Cancela o comando caso outro comando esteja em execução.
+      if (this.isBusy) return;
+
+      // Define o status de que um comando está em execução.
       this.isBusy = true;
 
+      // Invoca e aguarda a ação de login do estado da aplicação.
       await this.login(this.form);
 
+      // Caso o usuário esteja autenticado, navega para a página 'pedidos'.
       if (this.isAuthenticated) {
         await this.$router.replace({ name: 'pedidos' });
       }
 
+      // Define o status de que não há um comando está em execução.
       this.isBusy = false;
     },
   },

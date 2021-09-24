@@ -18,6 +18,10 @@
 </template>
 
 <script>
+/**
+ * Página Início.
+ * Página inicial da aplicação.
+ */
 export default {
   name: 'Inicio',
 };
