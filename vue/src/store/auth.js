@@ -5,18 +5,18 @@ const auth = {
   namespaced: true,
 
   state: {
-    isLoading: true,
+    isInitialized: false,
     usuario: null,
     accessToken: null,
   },
 
   getters: {
     /**
-     * Retorna o estado de carregamento do módulo.
+     * Retorna o estado de inicialização do módulo.
      * @param state
      * @returns {boolean}
      */
-    isLoading: (state) => state.isLoading,
+    isInitialized: (state) => state.isInitialized,
 
     /**
      * Retorna o usuário autenticado no momento.
@@ -38,16 +38,23 @@ const auth = {
      * @returns {boolean}
      */
     isAuthenticated: (state) => (!!state.usuario && !!state.accessToken),
+
+    /**
+     * Retorna a informação de se o usuário é um administrador.
+     * @param state
+     * @returns {boolean}
+     */
+    isAdmin: (state) => (!!state.usuario && state.usuario.admin),
   },
 
   mutations: {
     /**
-     * Altera o estado de carregamento do módulo.
+     * Altera o estado de inicialização do módulo.
      * @param state
-     * @param {bool} isLoading
+     * @param {bool} isInitialized
      */
-    setIsLoading(state, isLoading) {
-      state.isLoading = isLoading;
+    setIsInitialized(state, isInitialized) {
+      state.isInitialized = isInitialized;
     },
 
     /**
@@ -82,7 +89,7 @@ const auth = {
      * @param dispatch
      * @returns {Promise<void>}
      */
-    async init({ commit, dispatch }) {
+    async initialize({ commit, dispatch }) {
       // Busca o token de acesso no armazenamento local.
       const accessToken = localStorage.getItem('accessToken');
 
@@ -95,8 +102,8 @@ const auth = {
         await dispatch('logout');
       }
 
-      // Define o estado de carregamento do módulo como concluído.
-      commit('setIsLoading', false);
+      // Define o estado de inicialização do módulo como concluído.
+      commit('setIsInitialized', true);
     },
 
     /**

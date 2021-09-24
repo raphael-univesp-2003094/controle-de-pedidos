@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div v-if="isLoading">Carregando aplicação...</div>
-    <router-view v-else/>
+    <router-view v-if="isInitialized"/>
+    <div v-else>Iniciando aplicação...</div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 /**
  * Layout App.
@@ -19,21 +19,8 @@ export default {
   computed: {
     // Valores computados provenientes do estado da aplicação.
     ...mapGetters({
-      isLoading: 'auth/isLoading',
+      isInitialized: 'auth/isInitialized',
     }),
-  },
-
-  methods: {
-    // Ações provenientes do estado da aplicação.
-    ...mapActions({
-      initAuth: 'auth/init',
-    }),
-  },
-
-  mounted() {
-    // Ao montar o componente, invoca a ação para inicializar o módulo de autenticação do estado da
-    // aplicação.
-    this.initAuth();
   },
 };
 </script>
