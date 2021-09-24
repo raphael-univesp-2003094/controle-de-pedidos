@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from flask import Flask
 from flask_jwt_extended import JWTManager
@@ -26,6 +27,7 @@ def create_app() -> Flask:
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         JWT_SECRET_KEY=os.environ.get('JWT_SECRET_KEY'),
         JWT_ERROR_MESSAGE_KEY='error',
+        JWT_ACCESS_TOKEN_EXPIRES=timedelta(hours=24),
     )
 
     # Inicializa o gerenciador de banco de dados (SQLAlchemy).

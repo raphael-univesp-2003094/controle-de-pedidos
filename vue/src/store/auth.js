@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Define o local de armazenamento onde serão salvos os tokens de autenticação e refresh.
+// Define o local de armazenamento onde será salvo o token de autenticação.
 const tokenStorage = localStorage;
 
 // Módulo do estado da aplicação para autenticação.
@@ -11,7 +11,6 @@ const auth = {
     isLoading: true,
     usuario: null,
     accessToken: null,
-    refreshToken: null,
   },
 
   getters: {
@@ -37,18 +36,11 @@ const auth = {
     accessToken: (state) => state.accessToken,
 
     /**
-     * Retorna o token de refresh.
-     * @param state
-     * @returns {string|null}
-     */
-    refreshToken: (state) => state.refreshToken,
-
-    /**
      * Retorna o estado de autenticação do usuário.
      * @param state
      * @returns {boolean}
      */
-    isAuthenticated: (state) => state.usuario && state.accessToken && state.refreshToken,
+    isAuthenticated: (state) => (state.usuario && state.accessToken),
   },
 
   mutations: {
@@ -84,21 +76,6 @@ const auth = {
         tokenStorage.removeItem('accessToken');
       }
     },
-
-    /**
-     * Altera o token de refresh e o armazena no local de armazenamento definido.
-     * @param state
-     * @param refreshToken
-     */
-    setRefreshToken(state, refreshToken) {
-      state.refreshToken = refreshToken;
-
-      if (refreshToken) {
-        tokenStorage.setItem('refreshToken', refreshToken);
-      } else {
-        tokenStorage.removeItem('refreshToken');
-      }
-    },
   },
 
   actions: {
@@ -109,15 +86,14 @@ const auth = {
      * @returns {Promise<void>}
      */
     async init({ commit, dispatch }) {
-      // Busca os tokens de acesso e refresh no local de armazenamento.
+      // Busca o token de acesso no local de armazenamento.
       const accessToken = tokenStorage.getItem('accessToken');
-      const refreshToken = tokenStorage.getItem('refreshToken');
 
-      if (accessToken && refreshToken) {
-        // Caso ambos os tokens esteja definidos, carrega o usuário.
+      if (accessToken) {
+        // Caso o token esteja definido, carrega o usuário.
         await dispatch('loadUsuario');
       } else {
-        // Caso algum token não esteja definido, efetua o logout.
+        // Caso o token não esteja definido, efetua o logout.
         await dispatch('logout');
       }
 
@@ -140,29 +116,6 @@ const auth = {
 
         // Caso a operação seja bem sucedida, salva a resposta da requisição no estado da aplicação.
         commit('setUsuario', data.usuario);
-        commit('setAccessToken', data.access_token);
-        commit('setRefreshToken', data.refresh_token);
-      } catch (e) {
-        // Caso a operação não seja bem sucedida, efetua o logout.
-        dispatch('logout');
-      }
-    },
-
-    /**
-     * Efetua o refresh do token de acesso.
-     * @param commit
-     * @param dispatch
-     * @param getters
-     * @returns {Promise<void>}
-     */
-    async refresh({ commit, dispatch, getters }) {
-      try {
-        // Envia uma requisição à API para atualizar o token de acesso.
-        const { data } = await axios.post('/api/auth/refresh', {}, {
-          Authorization: `Bearer ${getters.refreshToken}`,
-        });
-
-        // Caso a operação seja bem sucedida, salva o novo token no estado da aplicação.
         commit('setAccessToken', data.access_token);
       } catch (e) {
         // Caso a operação não seja bem sucedida, efetua o logout.
@@ -197,7 +150,6 @@ const auth = {
       // Limpa o estado da aplicação.
       commit('setUsuario', null);
       commit('setAccessToken', null);
-      commit('setRefreshToken', null);
     },
   },
 };
