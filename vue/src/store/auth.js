@@ -13,6 +13,7 @@ const auth = {
   getters: {
     /**
      * Retorna o estado de inicialização do módulo.
+     *
      * @param state
      * @returns {boolean}
      */
@@ -20,6 +21,7 @@ const auth = {
 
     /**
      * Retorna o usuário autenticado no momento.
+     *
      * @param state
      * @returns {object|null}
      */
@@ -27,6 +29,7 @@ const auth = {
 
     /**
      * Retorna o token de acesso.
+     *
      * @param state
      * @returns {string|null}
      */
@@ -34,6 +37,7 @@ const auth = {
 
     /**
      * Retorna o estado de autenticação do usuário.
+     *
      * @param state
      * @returns {boolean}
      */
@@ -41,6 +45,7 @@ const auth = {
 
     /**
      * Retorna a informação de se o usuário é um administrador.
+     *
      * @param state
      * @returns {boolean}
      */
@@ -50,6 +55,7 @@ const auth = {
   mutations: {
     /**
      * Altera o estado de inicialização do módulo.
+     *
      * @param state
      * @param {bool} isInitialized
      */
@@ -59,6 +65,7 @@ const auth = {
 
     /**
      * Altera o usuário autenticado no momento.
+     *
      * @param state
      * @param {object|null} usuario
      */
@@ -68,6 +75,7 @@ const auth = {
 
     /**
      * Altera o token de acesso e o armazena no armazenamento local.
+     *
      * @param state
      * @param {string|null} accessToken
      */
@@ -85,6 +93,7 @@ const auth = {
   actions: {
     /**
      * Inicializa o módulo.
+     *
      * @param commit
      * @param dispatch
      * @returns {Promise<void>}
@@ -108,6 +117,7 @@ const auth = {
 
     /**
      * Efetua o login do usuário.
+     *
      * @param commit
      * @param dispatch
      * @param {string} email
@@ -130,6 +140,7 @@ const auth = {
 
     /**
      * Carrega o usuário atualmente autenticado.
+     *
      * @param commit
      * @param dispatch
      * @returns {Promise<void>}
@@ -149,6 +160,7 @@ const auth = {
 
     /**
      * Efetua o logout do usuário.
+     *
      * @param commit
      */
     logout({ commit }) {

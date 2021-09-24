@@ -9,7 +9,7 @@
 
         <h3 class="mb-4">Prefeitura Municipal de Penápolis</h3>
 
-        <router-link tag="button" class="btn btn-primary" :to="{name: 'login'}">
+        <router-link tag="button" class="btn btn-primary" to="/login">
           <i class="bi bi-box-arrow-in-right"></i> Entrar na Aplicação
         </router-link>
       </div>
