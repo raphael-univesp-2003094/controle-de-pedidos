@@ -14,23 +14,27 @@
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <router-link class="nav-link" to="/pedidos" active-class="active">
+              <i class="bi bi-card-list"></i>
               Pedidos
             </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/relatorios" active-class="active">
+              <i class="bi bi-clipboard-data"></i>
               Relatórios
             </router-link>
           </li>
 
           <li class="nav-item" v-if="isAdmin">
             <router-link class="nav-link" to="/usuarios" active-class="active">
+              <i class="bi bi-people"></i>
               Usuários
             </router-link>
           </li>
 
           <li class="nav-item">
             <router-link class="nav-link" to="/alterar-senha" active-class="active">
+              <i class="bi bi-key"></i>
               Alterar Senha
             </router-link>
           </li>
@@ -38,11 +42,17 @@
 
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <b class="nav-link">{{ usuario ? usuario["nome"] : '' }}</b>
+            <b class="nav-link">
+              <i class="bi bi-person"></i>
+              {{ usuario ? usuario["nome"] : '' }}
+            </b>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link c-pointer" @click="doLogout">Sair</a>
+            <a class="nav-link c-pointer" @click="doLogout">
+              <i class="bi bi-box-arrow-in-left"></i>
+              Sair
+            </a>
           </li>
         </ul>
       </div>
