@@ -5,7 +5,7 @@ import router from './router';
 import store from './store';
 
 // Importa os arquivos de estilo da aplicação.
-import './styles/app.scss';
+import '@/styles/app.scss';
 
 // Define um interceptador de requisições para o axios, que configura automaticamente o cabeçalho
 // 'Authorization' caso haja um token de acesso salvo no armazenamento local e caso o cabeçalho
