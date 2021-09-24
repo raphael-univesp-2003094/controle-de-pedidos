@@ -8,7 +8,6 @@ flask = "*"
 flask-migrate = "*"
 python-dotenv = "*"
 flask-sqlalchemy = "*"
-validators = "*"
 flask-jwt-extended = "*"
 werkzeug = "*"
 
