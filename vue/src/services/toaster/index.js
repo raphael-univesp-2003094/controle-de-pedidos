@@ -22,8 +22,11 @@ function createToastContainer() {
  * @param {'success'|'danger'|'warning'|'primary'} intent Intenção da toast.
  * @param {string} title Título da toast.
  * @param {string} message Mensagem da toast.
- * @param {{intent: 'success'|'danger'|'warning'|'primary', text: string,
- * onClick: function}[]} buttons Botões da toast.
+ * @param {{
+ * intent: 'success'|'danger'|'warning'|'primary',
+ * text: string,
+ * onClick: function
+ * }[]} buttons Botões da toast.
  * @returns {HTMLDivElement} Elemento HTML da toast criada.
  */
 function createToast(intent, title, message, buttons = []) {
@@ -91,8 +94,12 @@ function createToast(intent, title, message, buttons = []) {
 /**
  * Serviço de exibição de toasts.
  *
- * @type {{displaySuccess(string): void, displayError(string): void, displayConfirm(string,
- * Function, Function): void, displayWarning(string): void}}
+ * @type {{
+ * displaySuccess(string): void,
+ * displayError(string): void,
+ * displayConfirm(string, Function, Function): void,
+ * displayWarning(string): void
+ * }}
  */
 const toaster = {
   /**

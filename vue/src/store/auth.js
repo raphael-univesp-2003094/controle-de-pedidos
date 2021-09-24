@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '@/services/api';
 
 // Módulo do estado da aplicação para autenticação.
 const auth = {
@@ -127,11 +127,11 @@ const auth = {
     async login({ commit, dispatch }, { email, senha }) {
       try {
         // Envia uma requisição à API para autenticar o usuário.
-        const { data } = await axios.post('/api/auth/login', { email, senha });
+        const { usuario, access_token: accessToken } = await api.auth.login(email, senha);
 
         // Caso a operação seja bem sucedida, salva a resposta da requisição no estado da aplicação.
-        commit('setUsuario', data.usuario);
-        commit('setAccessToken', data.access_token);
+        commit('setUsuario', usuario);
+        commit('setAccessToken', accessToken);
       } catch (e) {
         // Caso a operação não seja bem sucedida, efetua o logout.
         dispatch('logout');
@@ -148,10 +148,10 @@ const auth = {
     async loadUsuario({ commit, dispatch }) {
       try {
         // Envia uma requisição à API para carregar o usuário atualmente autenticado.
-        const { data } = await axios.post('/api/auth/me');
+        const { usuario } = await api.auth.me();
 
         // Caso a operação seja bem sucedida, salva o usuário no estado da aplicação.
-        commit('setUsuario', data.usuario);
+        commit('setUsuario', usuario);
       } catch (e) {
         // Caso a operação não seja bem sucedida, efetua o logout.
         dispatch('logout');
