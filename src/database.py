@@ -43,7 +43,7 @@ class Pedido(db.Model):
     # Colunas do banco de dados / Atributos da entidade.
     id = db.Column(db.Integer, primary_key=True)
     numero = db.Column(db.Integer, nullable=False)
-    tipo = db.Column(db.Enum('SE', 'RM'), nullable=False)
+    tipo = db.Column(db.Enum('SE', 'RM', name='tipos'), nullable=False)
     data_chegada = db.Column(db.Date, nullable=False)
     secretaria_solicitante = db.Column(db.String(255), nullable=False)
     projeto = db.Column(db.String(255), nullable=False)
