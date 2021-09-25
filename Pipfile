@@ -12,6 +12,7 @@ flask-jwt-extended = "*"
 werkzeug = "*"
 gunicorn = "*"
 click = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
