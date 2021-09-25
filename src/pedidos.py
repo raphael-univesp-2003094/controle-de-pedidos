@@ -86,18 +86,28 @@ def read_all() -> (Response, int):
     query: dict = request.args.to_dict()
 
     # Caso tenha sido informado o parâmetro data_chegada, o altera no dicionário, convertendo para o formato de data.
+    # Caso o valor esteja informado e seja vazio, será adicionado à query o valor null.
     if query.get('data_chegada', None) is not None:
-        query['data_chegada'] = datetime.strptime(query['data_chegada'], '%Y-%m-%d').date()
+        if query['data_chegada'] == '':
+            query['data_chegada'] = None
+        else:
+            query['data_chegada'] = datetime.strptime(query['data_chegada'], '%Y-%m-%d').date()
 
     # Caso tenha sido informado o parâmetro data_envio_financeiro, o altera no dicionário, convertendo para o formato de
-    # data.
+    # data. Caso o valor esteja informado e seja vazio, será adicionado à query o valor null.
     if query.get('data_envio_financeiro', None) is not None:
-        query['data_envio_financeiro'] = datetime.strptime(query['data_envio_financeiro'], '%Y-%m-%d').date()
+        if query['data_envio_financeiro'] == '':
+            query['data_envio_financeiro'] = None
+        else:
+            query['data_envio_financeiro'] = datetime.strptime(query['data_envio_financeiro'], '%Y-%m-%d').date()
 
     # Caso tenha sido informado o parâmetro data_retorno_financeiro, o altera no dicionário, convertendo para o formato
-    # de data.
+    # de data. Caso o valor esteja informado e seja vazio, será adicionado à query o valor null.
     if query.get('data_retorno_financeiro', None) is not None:
-        query['data_retorno_financeiro'] = datetime.strptime(query['data_retorno_financeiro'], '%Y-%m-%d').date()
+        if query['data_retorno_financeiro'] == '':
+            query['data_retorno_financeiro'] = None
+        else:
+            query['data_retorno_financeiro'] = datetime.strptime(query['data_retorno_financeiro'], '%Y-%m-%d').date()
 
     # Busca todos os pedidos contidos no banco de dados, utilizando como filtro os parâmetros informados (dicionário
     # 'query').
