@@ -46,14 +46,14 @@ def create() -> (Response, int):
     pedido = Pedido(
         numero=numero,
         tipo=tipo,
-        data_chegada=datetime.strptime(data_chegada, '%d/%m/%Y').date(),
+        data_chegada=datetime.strptime(data_chegada, '%Y-%m-%d').date(),
         secretaria_solicitante=secretaria_solicitante,
         projeto=projeto,
         descricao=descricao,
         data_envio_financeiro=datetime.strptime(
-            data_envio_financeiro, '%d/%m/%Y').date() if data_envio_financeiro else None,
+            data_envio_financeiro, '%Y-%m-%d').date() if data_envio_financeiro else None,
         data_retorno_financeiro=datetime.strptime(
-            data_retorno_financeiro, '%d/%m/%Y').date() if data_retorno_financeiro else None,
+            data_retorno_financeiro, '%Y-%m-%d').date() if data_retorno_financeiro else None,
         situacao_autorizacao=situacao_autorizacao,
         observacoes=observacoes,
     )
@@ -87,17 +87,17 @@ def read_all() -> (Response, int):
 
     # Caso tenha sido informado o parâmetro data_chegada, o altera no dicionário, convertendo para o formato de data.
     if query.get('data_chegada', None) is not None:
-        query['data_chegada'] = datetime.strptime(query['data_chegada'], '%d/%m/%Y').date()
+        query['data_chegada'] = datetime.strptime(query['data_chegada'], '%Y-%m-%d').date()
 
     # Caso tenha sido informado o parâmetro data_envio_financeiro, o altera no dicionário, convertendo para o formato de
     # data.
     if query.get('data_envio_financeiro', None) is not None:
-        query['data_envio_financeiro'] = datetime.strptime(query['data_envio_financeiro'], '%d/%m/%Y').date()
+        query['data_envio_financeiro'] = datetime.strptime(query['data_envio_financeiro'], '%Y-%m-%d').date()
 
     # Caso tenha sido informado o parâmetro data_retorno_financeiro, o altera no dicionário, convertendo para o formato
     # de data.
     if query.get('data_retorno_financeiro', None) is not None:
-        query['data_retorno_financeiro'] = datetime.strptime(query['data_retorno_financeiro'], '%d/%m/%Y').date()
+        query['data_retorno_financeiro'] = datetime.strptime(query['data_retorno_financeiro'], '%Y-%m-%d').date()
 
     # Busca todos os pedidos contidos no banco de dados, utilizando como filtro os parâmetros informados (dicionário
     # 'query').
@@ -179,15 +179,15 @@ def update(tipo: str, numero: int) -> (Response, int):
 
     data_chegada = request.json.get('data_chegada', None)
     pedido.data_chegada = datetime.strptime(
-        data_chegada, '%d/%m/%Y').date() if data_chegada else pedido.data_chegada
+        data_chegada, '%Y-%m-%d').date() if data_chegada else pedido.data_chegada
 
     data_envio_financeiro = request.json.get('data_envio_financeiro', None)
     pedido.data_envio_financeiro = datetime.strptime(
-        data_envio_financeiro, '%d/%m/%Y').date() if data_envio_financeiro else pedido.data_envio_financeiro
+        data_envio_financeiro, '%Y-%m-%d').date() if data_envio_financeiro else pedido.data_envio_financeiro
 
     data_retorno_financeiro = request.json.get('data_retorno_financeiro', None)
     pedido.data_retorno_financeiro = datetime.strptime(
-        data_retorno_financeiro, '%d/%m/%Y').date() if data_retorno_financeiro else pedido.data_retorno_financeiro
+        data_retorno_financeiro, '%Y-%m-%d').date() if data_retorno_financeiro else pedido.data_retorno_financeiro
 
     # Efetua o commit da transação atual.
     db.session.commit()

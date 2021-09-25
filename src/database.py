@@ -64,12 +64,14 @@ class Pedido(db.Model):
             id=self.id,
             numero=self.numero,
             tipo=self.tipo,
-            data_chegada=self.data_chegada,
+            data_chegada=self.data_chegada.strftime('%Y-%m-%d') if self.data_chegada else None,
             secretaria_solicitante=self.secretaria_solicitante,
             projeto=self.projeto,
             descricao=self.descricao,
-            data_envio_financeiro=self.data_envio_financeiro,
-            data_retorno_financeiro=self.data_retorno_financeiro,
+            data_envio_financeiro=self.data_envio_financeiro.strftime(
+                '%Y-%m-%d') if self.data_envio_financeiro else None,
+            data_retorno_financeiro=self.data_retorno_financeiro.strftime(
+                '%Y-%m-%d') if self.data_retorno_financeiro else None,
             situacao_autorizacao=self.situacao_autorizacao,
             observacoes=self.observacoes,
         )
