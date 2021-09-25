@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import api from '@/services/api';
 import NavBar from '@/components/NavBar.vue';
 import toaster from '@/services/toaster';
@@ -188,7 +189,7 @@ export default {
         const { usuarios } = await api.usuarios.getUsuarios();
 
         // Substitui os usuários no estado da página.
-        this.usuarios = usuarios;
+        this.usuarios = _.values(usuarios);
       } catch (e) {
         // Exibe uma mensagem de erro caso a operação não seja concluída.
         toaster.displayError('Ocorreu um erro ao carregar os usuários.');
