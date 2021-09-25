@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, Response
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash
 
 from src.constants.http_status_codes import (HTTP_409_CONFLICT, HTTP_201_CREATED, HTTP_200_OK, HTTP_404_NOT_FOUND,
-                                             HTTP_204_NO_CONTENT)
+                                             HTTP_204_NO_CONTENT, HTTP_403_FORBIDDEN)
 from src.database import Usuario, db
 
 # Criação do Blueprint das rotas de gerenciamento de usuários.
@@ -20,6 +20,15 @@ def create() -> (Response, int):
     Variáveis Opcionais (JSON): 'admin'.
     :return: (Response, int)
     """
+
+    # Busca o requisitante e verifica se ele é um administrador. Caso não seja, retorna uma resposta JSON com status
+    # 403 (Proibido) contendo a mensagem de erro.
+    sender_id = get_jwt_identity()
+    sender = Usuario.query.get(sender_id)
+    if not sender or not sender.admin:
+        return jsonify({
+            'error': 'Você não possui permissão.',
+        }), HTTP_403_FORBIDDEN
 
     # Busca as variáveis obrigatórias e opcionais no corpo da requisição.
     nome = request.json.get('nome', None)
@@ -65,6 +74,15 @@ def read_all() -> (Response, int):
     :return: (Response, int)
     """
 
+    # Busca o requisitante e verifica se ele é um administrador. Caso não seja, retorna uma resposta JSON com status
+    # 403 (Proibido) contendo a mensagem de erro.
+    sender_id = get_jwt_identity()
+    sender = Usuario.query.get(sender_id)
+    if not sender or not sender.admin:
+        return jsonify({
+            'error': 'Você não possui permissão.',
+        }), HTTP_403_FORBIDDEN
+
     # Busca as variáveis opcionais nos parâmetros da requisição, e a transforma em um dicionário.
     query = request.args.to_dict()
 
@@ -103,6 +121,15 @@ def read_one(id: int) -> (Response, int):
     :return: (Response, int)
     """
 
+    # Busca o requisitante e verifica se ele é um administrador ou se ele está requisitando seu próprio id. Caso não
+    # seja, retorna uma resposta JSON com status 403 (Proibido) contendo a mensagem de erro.
+    sender_id = get_jwt_identity()
+    sender = Usuario.query.get(sender_id)
+    if (not sender or not sender.admin) and (sender_id != id):
+        return jsonify({
+            'error': 'Você não possui permissão.',
+        }), HTTP_403_FORBIDDEN
+
     # Busca um usuário no banco de dados com o id informado na URI.
     usuario = Usuario.query.get(id)
 
@@ -130,6 +157,15 @@ def update(id: int) -> (Response, int):
     :param id: int
     :return: (Response, int)
     """
+
+    # Busca o requisitante e verifica se ele é um administrador ou se ele está requisitando seu próprio id. Caso não
+    # seja, retorna uma resposta JSON com status 403 (Proibido) contendo a mensagem de erro.
+    sender_id = get_jwt_identity()
+    sender = Usuario.query.get(sender_id)
+    if (not sender or not sender.admin) and (sender_id != id):
+        return jsonify({
+            'error': 'Você não possui permissão.',
+        }), HTTP_403_FORBIDDEN
 
     # Busca um usuário no banco de dados com o id informado na URI.
     usuario = Usuario.query.get(id)
@@ -166,6 +202,15 @@ def delete(id: int) -> (Response, int):
     :param id: int
     :return: (Response, int)
     """
+
+    # Busca o requisitante e verifica se ele é um administrador ou se ele está requisitando seu próprio id. Caso não
+    # seja, retorna uma resposta JSON com status 403 (Proibido) contendo a mensagem de erro.
+    sender_id = get_jwt_identity()
+    sender = Usuario.query.get(sender_id)
+    if (not sender or not sender.admin) and (sender_id != id):
+        return jsonify({
+            'error': 'Você não possui permissão.',
+        }), HTTP_403_FORBIDDEN
 
     # Busca um usuário no banco de dados com o id informado na URI.
     usuario = Usuario.query.get(id)
