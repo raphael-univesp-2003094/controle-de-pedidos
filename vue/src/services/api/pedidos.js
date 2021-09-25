@@ -1,4 +1,5 @@
 import axios from 'axios';
+import convertObjKeys from '@/helpers/convert-obj-keys';
 
 /**
  * Tokens de cancelamento para que, quando os comandos getPedidos e getPedidos forem chamados pela
@@ -38,10 +39,10 @@ const pedidos = {
 
     // Faz a requisição.
     return axios.get('/api/pedidos', {
-      params: filtro,
+      params: convertObjKeys(filtro, 'snake_case'),
       cancelToken: getPedidosCancelTokenSource.token,
     })
-      .then((response) => response.data);
+      .then((response) => convertObjKeys(response.data, 'camelCase'));
   },
 
   /**
@@ -64,7 +65,7 @@ const pedidos = {
     return axios.get(`/api/pedidos/${tipo}/${numero}`, {
       cancelToken: getPedidoCancelTokenSource.token,
     })
-      .then((response) => response.data);
+      .then((response) => convertObjKeys(response.data, 'camelCase'));
   },
 
   /**
@@ -73,8 +74,8 @@ const pedidos = {
    * @param {object} pedido Dados do pedido que será criado.
    * @returns {Promise<{pedido:object}>} Resposta da API.
    */
-  createPedido: (pedido) => axios.post('/api/pedidos', pedido)
-    .then((response) => response.data),
+  createPedido: (pedido) => axios.post('/api/pedidos', convertObjKeys(pedido, 'snake_case'))
+    .then((response) => convertObjKeys(response.data, 'camelCase')),
 
   /**
    * Faz uma requisição à API para alterar um pedido.
@@ -82,8 +83,8 @@ const pedidos = {
    * @param {{tipo:string, numero:(int|string)}} pedido Dados do pedido que será alterado.
    * @returns {Promise<{pedido: object}>} Resposta da API.
    */
-  updatePedido: (pedido) => axios.post(`/api/pedidos/${pedido.tipo}/${pedido.numero}`, pedido)
-    .then((response) => response.data),
+  updatePedido: (pedido) => axios.patch(`/api/pedidos/${pedido.tipo}/${pedido.numero}`, convertObjKeys(pedido, 'snake_case'))
+    .then((response) => convertObjKeys(response.data, 'camelCase')),
 
   /**
    * Faz uma requisição à API para excluir um pedido.
@@ -92,8 +93,8 @@ const pedidos = {
    * @param {int|string} numero Número do pedido.
    * @returns {Promise<{}>} Resposta da API.
    */
-  deletePedido: (tipo, numero) => axios.post(`/api/pedidos/${tipo}/${numero}`)
-    .then((response) => response.data),
+  deletePedido: (tipo, numero) => axios.delete(`/api/pedidos/${tipo}/${numero}`)
+    .then((response) => convertObjKeys(response.data, 'camelCase')),
 };
 
 export default pedidos;

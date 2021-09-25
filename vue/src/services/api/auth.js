@@ -1,4 +1,5 @@
 import axios from 'axios';
+import convertObjKeys from '@/helpers/convert-obj-keys';
 
 /**
  * Módulo de consulta à API referente ao controle de autenticação.
@@ -15,7 +16,7 @@ const auth = {
    * @returns {Promise<{usuario: object}>} Resposta da API.
    */
   me: () => axios.post('/api/auth/me')
-    .then((response) => response.data),
+    .then((response) => convertObjKeys(response.data, 'camelCase')),
 
   /**
    * Faz uma requisição à API para efetuar o login do usuário.
@@ -25,7 +26,7 @@ const auth = {
    * @returns {Promise<{usuario: object, access_token: string}>} Resposta da API.
    */
   login: (email, senha) => axios.post('/api/auth/login', { email, senha })
-    .then((response) => response.data),
+    .then((response) => convertObjKeys(response.data, 'camelCase')),
 };
 
 export default auth;

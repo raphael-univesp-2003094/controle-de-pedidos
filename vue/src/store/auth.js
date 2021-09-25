@@ -127,7 +127,7 @@ const auth = {
     async login({ commit, dispatch }, { email, senha }) {
       try {
         // Envia uma requisição à API para autenticar o usuário.
-        const { usuario, access_token: accessToken } = await api.auth.login(email, senha);
+        const { usuario, accessToken } = await api.auth.login(email, senha);
 
         // Caso a operação seja bem sucedida, salva a resposta da requisição no estado da aplicação.
         commit('setUsuario', usuario);
