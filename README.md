@@ -24,6 +24,8 @@ do frontend;
 - <b>Vuex: </b> Pacote utilizado para manipulação e gerenciamento do estado da aplicação. Neste projeto, foi utilizado 
 apenas para o gerenciamento da autenticação da aplicação. 
 - <b>Axios: </b> Pacote utilizado para manipulação de requisições AJAX para comunicação com o backend;
+- <b>Lodash: </b> Pacote de helpers (funções de ajuda), tais como conversão de strings do formato snake_case para 
+camelCase e vice-versa;
 - <b>ESLint: </b> Pacote utilizado para padronização do código e evidenciação de alguns bugs. neste projeto, foi
 utilizado o padrão Airbnb;
 - <b>Bootstrap: </b> Framework CSS utilizado para estilização dos componentes da aplicação;
