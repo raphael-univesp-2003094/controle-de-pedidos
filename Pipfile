@@ -10,6 +10,7 @@ python-dotenv = "*"
 flask-sqlalchemy = "*"
 flask-jwt-extended = "*"
 werkzeug = "*"
+gunicorn = "*"
 
 [dev-packages]
 
