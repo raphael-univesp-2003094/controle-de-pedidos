@@ -5,6 +5,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 
 from src.auth import auth_bp
+from src.commands import init_database
 from src.database import db
 from src.pedidos import pedidos_bp
 from src.spa import spa_bp
@@ -42,6 +43,9 @@ def create_app() -> Flask:
     app.register_blueprint(pedidos_bp)
     app.register_blueprint(usuarios_bp)
     app.register_blueprint(spa_bp)
+
+    # Registra os comandos da CLI.
+    app.cli.add_command(init_database)
 
     # Retorna a aplicação Flask.
     return app
