@@ -32,9 +32,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import * as yup from 'yup';
 import api from '@/services/api';
 import toaster from '@/services/toaster';
-import * as yup from "yup";
 
 /**
  * Página Login.
