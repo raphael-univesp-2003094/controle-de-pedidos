@@ -18,7 +18,8 @@
               <div class="col">
                 <label class="form-label col-form-label-sm">Número do Pedido</label>
                 <input class="form-control form-control-sm" ref="numeroInput" type="text"
-                       v-model="form.numero" @input="debounceSearchPedido" :disabled="isBusy">
+                       v-only-numbers v-model="form.numero" @input="debounceSearchPedido"
+                       :disabled="isBusy">
               </div>
 
               <div class="col">
@@ -40,22 +41,22 @@
             <div class="row mb-3">
               <div class="col">
                 <label class="form-label col-form-label-sm">Secretaria Solicitante</label>
-                <input class="form-control form-control-sm" type="text"
+                <input class="form-control form-control-sm" type="text" v-uppercase
                        v-model="form.secretariaSolicitante" :disabled="isBusy">
               </div>
 
               <div class="col">
                 <label class="form-label col-form-label-sm">Projeto</label>
-                <input class="form-control form-control-sm" type="text" v-model="form.projeto"
-                       :disabled="isBusy">
+                <input class="form-control form-control-sm" type="text" v-uppercase
+                       v-model="form.projeto" :disabled="isBusy">
               </div>
             </div>
 
             <div class="row mb-3">
               <div class="col">
                 <label class="form-label col-form-label-sm">Descrição</label>
-                <textarea class="form-control form-control-sm no-resize" v-model="form.descricao"
-                          rows="3" :disabled="isBusy"/>
+                <textarea class="form-control form-control-sm no-resize" v-uppercase
+                          v-model="form.descricao" rows="3" :disabled="isBusy"/>
               </div>
             </div>
 
@@ -74,7 +75,7 @@
 
               <div class="col">
                 <label class="form-label col-form-label-sm">Situação da Autorização</label>
-                <input class="form-control form-control-sm" type="text"
+                <input class="form-control form-control-sm" type="text" v-uppercase
                        v-model="form.situacaoAutorizacao" :disabled="isBusy">
               </div>
             </div>
@@ -82,8 +83,8 @@
             <div class="row mb-3">
               <div class="col">
                 <label class="form-label col-form-label-sm">Observações</label>
-                <textarea class="form-control form-control-sm no-resize" v-model="form.observacoes"
-                          rows="3" :disabled="isBusy"/>
+                <textarea class="form-control form-control-sm no-resize" v-uppercase
+                          v-model="form.observacoes" rows="3" :disabled="isBusy"/>
               </div>
             </div>
 
@@ -127,6 +128,8 @@ import * as yup from 'yup';
 import api from '@/services/api';
 import NavBar from '@/components/NavBar.vue';
 import toaster from '@/services/toaster';
+import uppercase from '@/directives/uppercase';
+import onlyNumbers from '@/directives/only-numbers';
 
 /**
  * Página Pedidos.
@@ -136,6 +139,8 @@ export default {
   name: 'Pedidos',
 
   components: { NavBar },
+
+  directives: { uppercase, onlyNumbers },
 
   data() {
     return {
