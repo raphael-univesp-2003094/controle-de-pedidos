@@ -72,6 +72,7 @@ totalmente compatível com o Git, ser gratuito e atender às necessidades para o
 - <b>Axios: </b> Pacote utilizado para manipulação de requisições AJAX para comunicação com o backend.
 - <b>Lodash: </b> Pacote de helpers (funções de ajuda), tais como conversão de strings do formato snake_case para
   camelCase e vice-versa.
+- <b>Yup: </b> Pacote utilizado para validação de formulários.
 - <b>ESLint: </b> Pacote utilizado para padronização do código e evidenciação de alguns bugs. Neste projeto, foi
   utilizado o padrão Airbnb.
 - <b>Bootstrap: </b> Framework CSS utilizado para estilização dos componentes da aplicação.

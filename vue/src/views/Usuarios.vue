@@ -17,14 +17,14 @@
             <div class="row align-items-end">
               <div class="col">
                 <label class="form-label col-form-label-sm">Nome</label>
-                <input class="form-control form-control-sm" ref="nomeInput" type="text" required
+                <input class="form-control form-control-sm" ref="nomeInput" type="text"
                        v-model="form.nome" :disabled="isBusy">
               </div>
 
               <div class="col">
                 <label class="form-label col-form-label-sm">E-mail</label>
-                <input class="form-control form-control-sm" type="email" required
-                       v-model="form.email" :disabled="isBusy">
+                <input class="form-control form-control-sm" type="text" v-model="form.email"
+                       :disabled="isBusy">
               </div>
 
               <div class="col">
@@ -52,7 +52,7 @@
             <tr v-for="usuario in usuarios" :key="usuario.id">
               <td>{{ usuario.nome }}</td>
               <td>{{ usuario.email }}</td>
-              <td v-if="usuario.email === 'admin@admin.dev'">&nbsp;</td>
+              <td v-if="usuario.admin">&nbsp;</td>
               <td class="text-end" v-else>
                 <button class="btn btn-sm btn-danger me-2" @click="deleteUsuario(usuario)"
                         :disabled="isBusy">
@@ -86,6 +86,7 @@
 
 <script>
 import _ from 'lodash';
+import * as yup from 'yup';
 import api from '@/services/api';
 import NavBar from '@/components/NavBar.vue';
 import toaster from '@/services/toaster';
@@ -116,6 +117,15 @@ export default {
         nome: '',
         email: '',
       },
+
+      // Esquema de validação do formulário.
+      validationSchema: yup.object().shape({
+        nome: yup.string()
+          .required('O campo "Nome" é obrigatório.'),
+        email: yup.string()
+          .email('O campo "E-mail" deve conter um e-mail válido.')
+          .required('O campo "E-mail" é obrigatório.'),
+      }),
     };
   },
 
@@ -129,9 +139,11 @@ export default {
       // Cancela o comando caso outro comando esteja em execução.
       if (this.isBusy) return;
 
-      // Cancela o comando e exibe um erro caso algum dos campos não estejam preenchidos.
-      if (!this.form.nome || !this.form.email) {
-        toaster.displayError("Os campos 'Nome' e 'E-mail' devem ser preenchidos.");
+      // Valida o formulário e caso haja algum erro, mostra uma toast e aborta a operação.
+      try {
+        await this.validationSchema.validate(this.form, { abortEarly: false });
+      } catch (e) {
+        toaster.displayError(e.errors.join('\n'));
         return;
       }
 
@@ -164,8 +176,13 @@ export default {
         // Recarrega os usuários cadastrados.
         await this.loadUsuarios();
       } catch (e) {
-        // Exibe uma mensagem de erro caso a operação não seja concluída.
-        toaster.displayError('Ocorreu um erro ao criar o usuário.');
+        // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+        // caso a operação não seja concluída.
+        if (e.response?.data?.error) {
+          toaster.displayError(e.response.data.error);
+        } else {
+          toaster.displayError('Ocorreu um erro ao criar o usuário.');
+        }
 
         // Define o status de que não há um comando está em execução.
         this.isBusy = false;
@@ -191,8 +208,13 @@ export default {
         // Substitui os usuários no estado da página.
         this.usuarios = _.values(usuarios);
       } catch (e) {
-        // Exibe uma mensagem de erro caso a operação não seja concluída.
-        toaster.displayError('Ocorreu um erro ao carregar os usuários.');
+        // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+        // caso a operação não seja concluída.
+        if (e.response?.data?.error) {
+          toaster.displayError(e.response.data.error);
+        } else {
+          toaster.displayError('Ocorreu um erro ao carregar os usuários.');
+        }
       }
 
       // Define o status de que não há um comando está em execução.
@@ -224,8 +246,13 @@ export default {
             // Exibe uma mensagem de sucesso caso a operação seja concluída.
             toaster.displaySuccess('Usuário excluído com sucesso.');
           } catch (e) {
-            // Exibe uma mensagem de erro caso a operação não seja concluída.
-            toaster.displayError('Ocorreu um erro ao excluir o usuário.');
+            // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+            // caso a operação não seja concluída.
+            if (e.response?.data?.error) {
+              toaster.displayError(e.response.data.error);
+            } else {
+              toaster.displayError('Ocorreu um erro ao excluir o usuário.');
+            }
           }
 
           // Define o status de que não há um comando está em execução.
@@ -269,8 +296,13 @@ export default {
             // Exibe uma mensagem de sucesso caso a operação seja concluída.
             toaster.displaySuccess(`Senha redefinida com sucesso. A nova senha do usuário de e-mail ${usuario.email} é "${senha}".`);
           } catch (e) {
-            // Exibe uma mensagem de erro caso a operação não seja concluída.
-            toaster.displayError('Ocorreu um erro ao redefinir a senha do usuário.');
+            // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+            // caso a operação não seja concluída.
+            if (e.response?.data?.error) {
+              toaster.displayError(e.response.data.error);
+            } else {
+              toaster.displayError('Ocorreu um erro ao redefinir a senha do usuário.');
+            }
           }
 
           // Define o status de que não há um comando está em execução.

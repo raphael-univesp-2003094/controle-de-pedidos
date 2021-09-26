@@ -147,8 +147,13 @@ export default {
         // Exibe uma mensagem de sucesso caso a operação seja concluída.
         toaster.displaySuccess('Pedidos carregados com sucesso.');
       } catch (e) {
-        // Exibe uma mensagem de erro caso a operação não seja concluída.
-        toaster.displayError('Ocorreu um erro ao buscar os pedidos.');
+        // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+        // caso a operação não seja concluída.
+        if (e.response?.data?.error) {
+          toaster.displayError(e.response.data.error);
+        } else {
+          toaster.displayError('Ocorreu um erro ao buscar os pedidos.');
+        }
       }
 
       // Define o status de que não há um comando está em execução.

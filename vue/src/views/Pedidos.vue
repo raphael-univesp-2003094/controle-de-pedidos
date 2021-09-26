@@ -123,6 +123,7 @@
 
 <script>
 import _ from 'lodash';
+import * as yup from 'yup';
 import api from '@/services/api';
 import NavBar from '@/components/NavBar.vue';
 import toaster from '@/services/toaster';
@@ -157,6 +158,22 @@ export default {
         situacaoAutorizacao: '',
         observacoes: '',
       },
+
+      // Esquema de validação do formulário.
+      validationSchema: yup.object().shape({
+        numero: yup.string()
+          .required('O campo "Número do Pedido" é obrigatório.'),
+        tipo: yup.string()
+          .required('O campo "Tipo do Pedido" é obrigatório.'),
+        dataChegada: yup.string()
+          .required('O campo "Data de Chegada" é obrigatório.'),
+        secretariaSolicitante: yup.string()
+          .required('O campo "Secretaria Solicitante" é obrigatório.'),
+        projeto: yup.string()
+          .required('O campo "Projeto" é obrigatório.'),
+        descricao: yup.string()
+          .required('O campo "Descrição" é obrigatório.'),
+      }),
     };
   },
 
@@ -217,6 +234,14 @@ export default {
       // pedido já carregado ou se outro comando já está em execução.
       if (this.existentPedido || !this.form.numero || !this.form.tipo || this.isBusy) return;
 
+      // Valida o formulário e caso haja algum erro, mostra uma toast e aborta a operação.
+      try {
+        await this.validationSchema.validate(this.form, { abortEarly: false });
+      } catch (e) {
+        toaster.displayError(e.errors.join('\n'));
+        return;
+      }
+
       // Define o status de que um comando está em execução.
       this.isBusy = true;
 
@@ -230,8 +255,13 @@ export default {
         // Exibe uma mensagem de sucesso caso a operação seja concluída.
         toaster.displaySuccess('Pedido gravado.');
       } catch (e) {
-        // Exibe uma mensagem de erro caso a operação não seja concluída.
-        toaster.displayError('Ocorreu um erro ao gravar o pedido.');
+        // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+        // caso a operação não seja concluída.
+        if (e.response?.data?.error) {
+          toaster.displayError(e.response.data.error);
+        } else {
+          toaster.displayError('Ocorreu um erro ao gravar o pedido.');
+        }
       }
 
       // Define o status de que não há um comando está em execução.
@@ -248,6 +278,14 @@ export default {
       // um pedido já carregado ou se outro comando já está em execução.
       if (!this.existentPedido || !this.form.numero || !this.form.tipo || this.isBusy) return;
 
+      // Valida o formulário e caso haja algum erro, mostra uma toast e aborta a operação.
+      try {
+        await this.validationSchema.validate(this.form, { abortEarly: false });
+      } catch (e) {
+        toaster.displayError(e.errors.join('\n'));
+        return;
+      }
+
       // Define o status de que um comando está em execução.
       this.isBusy = true;
 
@@ -261,8 +299,13 @@ export default {
         // Exibe uma mensagem de sucesso caso a operação seja concluída.
         toaster.displaySuccess('Pedido alterado.');
       } catch (e) {
-        // Exibe uma mensagem de erro caso a operação não seja concluída.
-        toaster.displayError('Ocorreu um erro ao alterar o pedido.');
+        // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+        // caso a operação não seja concluída.
+        if (e.response?.data?.error) {
+          toaster.displayError(e.response.data.error);
+        } else {
+          toaster.displayError('Ocorreu um erro ao alterar o pedido.');
+        }
       }
 
       // Define o status de que não há um comando está em execução.
@@ -297,8 +340,13 @@ export default {
             // Exibe uma mensagem de sucesso caso a operação seja concluída.
             toaster.displaySuccess('Pedido excluído.');
           } catch (e) {
-            // Exibe uma mensagem de erro caso a operação não seja concluída.
-            toaster.displayError('Ocorreu um erro ao excluir o pedido.');
+            // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+            // caso a operação não seja concluída.
+            if (e.response?.data?.error) {
+              toaster.displayError(e.response.data.error);
+            } else {
+              toaster.displayError('Ocorreu um erro ao excluir o pedido.');
+            }
           }
 
           // Define o status de que não há um comando está em execução.

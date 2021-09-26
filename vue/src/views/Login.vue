@@ -9,14 +9,14 @@
 
           <p>
             <label class="form-label col-form-label-sm">E-mail</label>
-            <input class="form-control form-control-sm" type="email" required v-model="form.email"
+            <input class="form-control form-control-sm" type="text" v-model="form.email"
                    autofocus :disabled="isBusy">
           </p>
 
           <p>
             <label class="form-label col-form-label-sm">Senha</label>
-            <input class="form-control form-control-sm" type="password" required
-                   v-model="form.senha" :disabled="isBusy">
+            <input class="form-control form-control-sm" type="password" v-model="form.senha"
+                   :disabled="isBusy">
           </p>
 
           <p class="d-grid gap-2">
@@ -33,6 +33,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import api from '@/services/api';
+import toaster from '@/services/toaster';
+import * as yup from "yup";
 
 /**
  * Página Login.
@@ -51,6 +53,15 @@ export default {
         email: '',
         senha: '',
       },
+
+      // Esquema de validação do formulário.
+      validationSchema: yup.object().shape({
+        email: yup.string()
+          .email('O campo "E-mail" deve conter um e-mail válido.')
+          .required('O campo "E-mail" é obrigatório.'),
+        senha: yup.string()
+          .required('O campo "Senha" é obrigatório.'),
+      }),
     };
   },
 
@@ -71,6 +82,14 @@ export default {
       // Cancela o comando caso outro comando esteja em execução.
       if (this.isBusy) return;
 
+      // Valida o formulário e caso haja algum erro, mostra uma toast e aborta a operação.
+      try {
+        await this.validationSchema.validate(this.form, { abortEarly: false });
+      } catch (e) {
+        toaster.displayError(e.errors.join('\n'));
+        return;
+      }
+
       // Define o status de que um comando está em execução.
       this.isBusy = true;
 
@@ -87,6 +106,14 @@ export default {
         // Caso a operação não seja bem sucedida, limpa o estado da aplicação.
         this.$store.commit('auth/setUsuario', null);
         this.$store.commit('auth/setAccessToken', null);
+
+        // Mostra a mensagem de erro vinda da API (caso exista) ou uma mensagem de erro padrão,
+        // caso a operação não seja concluída.
+        if (e.response?.data?.error) {
+          toaster.displayError(e.response.data.error);
+        } else {
+          toaster.displayError('Ocorreu um erro ao efetuar o login.');
+        }
       }
 
       // Define o status de que não há um comando está em execução.

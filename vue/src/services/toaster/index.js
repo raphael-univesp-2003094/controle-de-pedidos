@@ -70,6 +70,7 @@ function createToast(intent, title, message, buttons = []) {
   // Cria o corpo da toast.
   const bodyEl = document.createElement('div');
   bodyEl.className = 'toast-body';
+  bodyEl.style.whiteSpace = 'pre-line';
   bodyEl.textContent = message;
   if (btnContainerEl) bodyEl.appendChild(btnContainerEl);
 
