@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 /**
  * Componente NavBar.
@@ -81,24 +81,16 @@ export default {
   },
 
   methods: {
-    // Ações provenientes do estado da aplicação.
-    ...mapActions({
-      logout: 'auth/logout',
-    }),
-
     /**
      * Efetua o logout do usuário.
      *
      * @returns {Promise<void>}
      */
     async doLogout() {
-      // Invoca e aguarda a ação de logout do estado da aplicação.
-      await this.logout();
-
-      // Caso o usuário não esteja autenticado, navega para a página 'login'.
-      if (!this.isAuthenticated) {
-        await this.$router.replace({ name: 'login' });
-      }
+      // Limpa o estado da aplicação e navega para a página 'login'.
+      this.$store.commit('auth/setUsuario', null);
+      this.$store.commit('auth/setAccessToken', null);
+      await this.$router.replace({ name: 'login' });
     },
   },
 };

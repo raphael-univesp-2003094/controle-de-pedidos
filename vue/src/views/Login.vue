@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
+import api from '@/services/api';
 
 /**
  * Página Login.
@@ -61,11 +62,6 @@ export default {
   },
 
   methods: {
-    // Ações provenientes do estado da aplicação.
-    ...mapActions({
-      login: 'auth/login',
-    }),
-
     /**
      * Efetua o login do usuário.
      *
@@ -78,12 +74,19 @@ export default {
       // Define o status de que um comando está em execução.
       this.isBusy = true;
 
-      // Invoca e aguarda a ação de login do estado da aplicação.
-      await this.login(this.form);
+      try {
+        // Envia uma requisição à API para autenticar o usuário.
+        const { usuario, accessToken } = await api.auth.login(this.form.email, this.form.senha);
 
-      // Caso o usuário esteja autenticado, navega para a página 'pedidos'.
-      if (this.isAuthenticated) {
+        // Caso a operação seja bem sucedida, salva a resposta da requisição no estado da aplicação
+        // e navega para a página 'pedidos'..
+        this.$store.commit('auth/setUsuario', usuario);
+        this.$store.commit('auth/setAccessToken', accessToken);
         await this.$router.replace({ name: 'pedidos' });
+      } catch (e) {
+        // Caso a operação não seja bem sucedida, limpa o estado da aplicação.
+        this.$store.commit('auth/setUsuario', null);
+        this.$store.commit('auth/setAccessToken', null);
       }
 
       // Define o status de que não há um comando está em execução.

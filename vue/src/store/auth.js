@@ -95,78 +95,35 @@ const auth = {
      * Inicializa o módulo.
      *
      * @param commit
-     * @param dispatch
      * @returns {Promise<void>}
      */
-    async initialize({ commit, dispatch }) {
+    async initialize({ commit }) {
       // Busca o token de acesso no armazenamento local.
       const accessToken = localStorage.getItem('accessToken');
 
       if (accessToken) {
         // Caso o token esteja definido, o salva no estado da aplicação carrega o usuário.
         commit('setAccessToken', accessToken);
-        await dispatch('loadUsuario');
+
+        try {
+          // Envia uma requisição à API para carregar o usuário atualmente autenticado.
+          const { usuario } = await api.auth.me();
+
+          // Caso a operação seja bem sucedida, salva o usuário no estado da aplicação.
+          commit('setUsuario', usuario);
+        } catch (e) {
+          // Caso a operação não seja bem sucedida, limpa o estado da aplicação.
+          commit('setUsuario', null);
+          commit('setAccessToken', null);
+        }
       } else {
-        // Caso o token não esteja definido, efetua o logout.
-        await dispatch('logout');
+        // Caso o token não esteja definido, limpa o estado da aplicação.
+        commit('setUsuario', null);
+        commit('setAccessToken', null);
       }
 
       // Define o estado de inicialização do módulo como concluído.
       commit('setIsInitialized', true);
-    },
-
-    /**
-     * Efetua o login do usuário.
-     *
-     * @param commit
-     * @param dispatch
-     * @param {string} email
-     * @param {string} senha
-     * @returns {Promise<void>}
-     */
-    async login({ commit, dispatch }, { email, senha }) {
-      try {
-        // Envia uma requisição à API para autenticar o usuário.
-        const { usuario, accessToken } = await api.auth.login(email, senha);
-
-        // Caso a operação seja bem sucedida, salva a resposta da requisição no estado da aplicação.
-        commit('setUsuario', usuario);
-        commit('setAccessToken', accessToken);
-      } catch (e) {
-        // Caso a operação não seja bem sucedida, efetua o logout.
-        dispatch('logout');
-      }
-    },
-
-    /**
-     * Carrega o usuário atualmente autenticado.
-     *
-     * @param commit
-     * @param dispatch
-     * @returns {Promise<void>}
-     */
-    async loadUsuario({ commit, dispatch }) {
-      try {
-        // Envia uma requisição à API para carregar o usuário atualmente autenticado.
-        const { usuario } = await api.auth.me();
-
-        // Caso a operação seja bem sucedida, salva o usuário no estado da aplicação.
-        commit('setUsuario', usuario);
-      } catch (e) {
-        // Caso a operação não seja bem sucedida, efetua o logout.
-        dispatch('logout');
-      }
-    },
-
-    /**
-     * Efetua o logout do usuário.
-     *
-     * @param commit
-     */
-    logout({ commit }) {
-      // Limpa o estado da aplicação.
-      commit('setUsuario', null);
-      commit('setAccessToken', null);
     },
   },
 };
