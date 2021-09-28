@@ -1,0 +1,33 @@
+Levantamento de Requisitos
+
+- Autenticação de usuário e administradores por e-mail e senha.
+    - Os administradores e usuários autenticados terão permissão para:
+        - cadastrar e efetuar alterações em pedidos;
+        - alterar sua senha;
+        - gerar relatórios em PDF; e
+        - listar pedidos por data de envio ao financeiro.
+    - Apenas os administradores terão permissão para:
+        - criar outros usuários;
+        - redefinir a senha de outros usuários; e
+        - excluir outros usuários.
+
+- Formulário de cadastro de pedidos:
+	- Campos necessários com preenchimento obrigatório:
+        - Número do Pedido (número);
+        - Tipo do Pedido ("SE" ou "RM");
+        - Data de Chegada (data);
+        - Secretaria Solicitante (texto curto);
+        - Projeto (texto curto);
+        - Descrição (texto longo).
+	- Campos necessários com preenchimento não obrigatório:
+        - Data de Envio ao Financeiro (data);
+        - Data de Retorno do Financeiro (data);
+        - Situação da Autorização (texto curto);
+        -  Observações (texto longo).
+    - O formulário deve buscar se há registro quando o usuário digitar o Número do Pedido e especificar o Tipo do Pedido, mostrando no mesmo formulário de cadastro o pedido encontrado, permitindo alterações e a exclusão do pedido.
+
+- Funcionalidade de relatórios:
+	- Relatório dos Pedidos por Data de Envio ao Financeiro.
+        - O relatório deve conter: número, tipo, secretaria solicitante, projeto, e descrição do pedido.
+	- Permitir exportação em PDF.
+        - O arquivo exportado deverá informar qual os parâmetros da busca que o relatório se refere.
