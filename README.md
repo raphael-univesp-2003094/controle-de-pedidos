@@ -121,11 +121,11 @@ O Modelo Físico lida com o design do banco de dados real com base nos requisito
 
 ### Backend (API)
 
-- <b>/docs/</b> - Diretório contendo arquivos auxiliares para elaboração dessa documentação, juntamente com outros arquivos que foram necessários para o planejamento do desenvolvimento da aplicação.
+- <b>/docs/</b> - Diretório contendo arquivos auxiliares para elaboração dessa documentação e outros arquivos que foram necessários para o planejamento do desenvolvimento da aplicação.
 - <b>/src/</b> - Diretório que contém os principais arquivos do backend (API).
 - <b>/src/constants/</b> - Diretório que contém as constantes do backend, ou seja, arquivos que nunca sofrerão alteração e serão usados apenas para humanizar alguns valores lógicos. Neste projeto temos apenas um arquivo, o qual contém todos os códigos de status de resposta HTTP, para um melhor entendimento do que se refere cada código, melhorando a leitura de trechos de códigos da aplicação, devido ao aumento da intuitividade.
 - <b>/src/static/</b> - Diretório que contém os arquivos estáticos da aplicação, tais como arquivos CSS, JavaScript, Imagens e Fontes. Os arquivos serão gerados pelo compilador do Vue (frontend) ao compilar a aplicação SPA.
-- <b>/src/templates/</b> - Diretório que contém o arquivo de template da aplicação (index.html), o qual servirá como página "base" para a execução do framework Vue, e seu favicon (favicon.ico). Os arquivos serão gerados pelo compilador do vue (frontend) ao compilar a aplicação SPA.
+- <b>/src/templates/</b> - Diretório que contém o arquivo de template da aplicação (index.html), o qual servirá como página "base" para a execução do framework Vue, e o seu favicon (favicon.ico). Os arquivos serão gerados pelo compilador do vue (frontend) ao compilar a aplicação SPA.
 - <b>/src/\_\_init__.py</b> - Arquivo que contém toda a lógica de inicialização e configuração da aplicação desenvolvida através do framework Flask.
 - <b>/src/spa.py</b> - Arquivo que contém toda a lógica das rotas que serão usadas para renderização da aplicação SPA (Vue).
 - <b>/src/auth.py</b> - Arquivo que contém toda a lógica das rotas que serão usadas para a autenticação do usuário.
@@ -134,19 +134,19 @@ O Modelo Físico lida com o design do banco de dados real com base nos requisito
 - <b>/src/commands.py</b> - Arquivo que contém os comandos personalizados da CLI do Flask.
 - <b>/src/database.py</b> - Arquivo que contém as entidades (models) da aplicação (Usuario e Pedido), com seus atributos e métodos.
 - <b>/src/app.db</b> - Arquivo de banco de dados do Sqlite3, utilizado para desenvolvimento e teste locais, dispensando a necessidade de instalação e configuração de um servidor de banco de dados. Obs.: Este arquivo está configurado para ser ignorado pelo controle de versão.
-- <b>/vue/</b> - Diretório contendo a aplicação frontend (não compilada) e suas dependências. Veremos mais sobre seus subdiretórios na próxima seção.
+- <b>/vue/</b> - Diretório contendo a aplicação frontend (não compilada) e as suas dependências. Veremos mais sobre seus subdiretórios na próxima seção.
 - <b>/.env.example</b> - Arquivo que contém um modelo de configuração das variáveis de ambiente.
 - <b>/.env</b> - Arquivo que contém a configuração das variáveis de ambiente. Obs.: Este arquivo está configurado para ser ignorado pelo controle de versão.
 - <b>/.gitignore</b> - Arquivo que contém a lista de diretórios e/ou arquivos que serão ignorados durante o versionamento da aplicação pela ferramenta Git.
 - <b>/Pipfile</b> - Arquivo utilizado pela ferramenta de gerenciamento de dependências "pipenv" para salvar as configurações e dependências do projeto.
 - <b>/Pipfile.lock</b> - Arquivo gerado automaticamente pelo "pipenv" para gravar (como se fosse um cache da Pipfile) as dependências atualmente instaladas no projeto. Em caso de um deploy da aplicação em um servidor (exemplo: Heroku), o servidor instalará as versões das dependências armazenadas nesta arquivo.
-- <b>/Procfile</b> - Arquivo utilizado pelo servidor do Heroku, em que declaramos explicitamente qual comando deve ser executado para iniciar seu aplicativo no servidor.
-- <b>/wsgi.py</b> - Arquivo que contém a lógica de inicialização da aplicação Flask no servidor Heroku (podendo ser utiliado também em outros servidores).
+- <b>/Procfile</b> - Arquivo utilizado pelo servidor do Heroku, em que declaramos explicitamente qual comando deve ser executado para iniciar o aplicativo no servidor.
+- <b>/wsgi.py</b> - Arquivo que contém a lógica de inicialização da aplicação Flask no servidor Heroku (podendo ser utilizado também em outros servidores).
 
 ### Frontend (SPA)
 
 - <b>/node_modules/</b> - Diretório que contém todas as dependências do frontend. Obs.: Este arquivo está configurado para ser ignorado pelo controle de versão.
-- <b>/public/</b> - Diretório que contém o arquivo de template da aplicação (index.html), o qual servirá como página "base" para a execução do framework Vue, e seu favicon (favicon.ico). Ao compilar o frontend, os arquivos deste diretório serão compilados e salvos no diretório <b>/src/templates/</b>, e deles serão removidos comentários e caracteres desnecessários, visando a redução do tamanho dos  arquivos.
+- <b>/public/</b> - Diretório que contém o arquivo de template da aplicação (index.html), o qual servirá como página "base" para a execução do framework Vue, e o seu favicon (favicon.ico). Ao compilar o frontend, os arquivos deste diretório serão compilados e salvos no diretório <b>/src/templates/</b>, e deles serão removidos comentários e caracteres desnecessários, visando a redução do tamanho dos  arquivos.
 - <b>/src/</b> - Diretório que contém os principais arquivos do frontend (SPA).
 - <b>/src/assets/</b> - Diretório que contém os arquivos estáticos da aplicação, tais como arquivos Imagens. Ao compilar o frontend, os arquivos deste diretório serão salvos no diretório <b>/src/static/</b>.
 - <b>/src/components/</b> - Diretório que contém os componentes que serão utilizados em várias partes da aplicação (ou em várias views/páginas).
@@ -156,17 +156,22 @@ O Modelo Físico lida com o design do banco de dados real com base nos requisito
 - <b>/src/services/</b> - Diretório que contém os serviços utilizados pela aplicação (api: serviço de comunicação com a API; pdf: serviço de geração de arquivos PDF; e toaster: serviço de exibição de toasts, ou notificações). Aqui abstraímos e tranformamos vários conjuntos de funções em serviços, visando evitar códigos repetitivos de funções utilizadas em vários lugares da aplicação, e facilitando a manutenção, uma vez que as funções que são relacionadas estão agrupadas, seguindo também o princípio DRY.
 - <b>/src/store/</b> - Diretório que contém os arquivos utilizados pelo gerenciador de estado do Vue (Vuex). Como dito anteriormente, utilizaremos este gerenciador apenas para controle de autenticação do usuário.
 - <b>/src/styles/</b> - Diretório que contém toda a lógica de importação de bibliotecas CSS, e contém também os estilos CSS personalizados para a aplicação.
-- <b>/src/views/</b> - Diretório que contém os componentes views, ou páginas, da aplicação. Diferentemente dos conponentes que estão no diretório <b>/src/components</b>, estes componentes não poderão ser utilizados em várias partes da aplicação.
-- <b>/src/App.vue</b> - Arquivo que contém o componente raiz, considerado também como o container, da aplicação. Nele serão renderizadas as views/páginas e todos o demais componentes. Podemos considerar, analogamente, este arquivo como sendo a tag <b>body</b> de uma página HTML.
+- <b>/src/views/</b> - Diretório que contém os componentes views, ou páginas, da aplicação. Diferentemente dos componentes que estão no diretório <b>/src/components</b>, estes componentes não poderão ser utilizados em várias partes da aplicação.
+- <b>/src/App.vue</b> - Arquivo que contém o componente raiz, considerado também como o container, da aplicação. Nele serão renderizadas as views/páginas e os demais componentes. Podemos considerar, analogamente, este arquivo como sendo a tag <b>body</b> de uma página HTML.
 - <b>/src/main.js</b> - Arquivo que contém toda a lógica de inicialização e configuração da aplição e suas dependências.
-- <b>/.browserlistrc</b> - Arquivo gerado automaticamente pela CLI de criação do Vue, no qual podemos consultar o leque de browsers com suporte à aplicação e suas versões.
+- <b>/.browserlistrc</b> - Arquivo gerado automaticamente pela CLI de criação do Vue, no qual podemos consultar o leque de browsers com suporte à aplicação e as suas versões.
 - <b>/.editorconfig</b> - Arquivo gerado automaticamente pela CLI de criação do Vue, o qual define as configurações do plugin EditorConfig, amplamente utilizado por IDEs para padronização de estilos. 
-- <b>/.eslintrs.js</b> - Arquivo que consiste nas configuração e regras que serão utilizadas pelo ESLint, para padronizar a formatação do código da aplicação, auxiliando assim em um melhor entendimento do código pelos programadores envolvidos no projeto.
+- <b>/.eslintrc.js</b> - Arquivo que consiste nas configuração e regras que serão utilizadas pelo ESLint, para padronizar a formatação do código da aplicação, auxiliando assim em um melhor entendimento do código pelos programadores envolvidos no projeto.
 - <b>/.gitignore</b> - Arquivo que contém a lista de diretórios e/ou arquivos que serão ignorados durante o versionamento da aplicação pela ferramenta Git.
 - <b>/babel.config.js</b> - Arquivo gerado automaticamente pela CLI de criação do Vue, o qual define as configurações do compilador de JavaScript, Babel.
 - <b>/package.json</b> - Arquivo utilizado pela ferramenta de gerenciamento de dependências "npm" (Node Package Manager) para salvar as configurações e dependências do projeto.
 - <b>/package-lock.json</b> - Arquivo gerado automaticamente pelo "npm" para gravar (como se fosse um cache do package.json) as dependências atualmente instaladas no projeto. Caso o projeto seja baixado em um novo computador, e seja executado o comando "npm install" (o qual instala as dependências do frontend do projeto), o "npm" instalará as versões das dependências armazenadas nesta arquivo.
 - <b>/vue.config.js</b> - Arquivo que contém as configurações personalizadas que serão utilizadas pelo compilador do Vue.
+
+## Branches (Controle de Versão)
+
+- <b>main</b> - Branch utilizado para o desenvolvimento da aplicação.
+- <b>deploy</b> - Branch utilizado para deploy da aplicação. Este branch somente deverá receber merge de versões estáveis da aplicação, e com o frontend já compilado em modo de produção, ou seja, com a aplicação pronta para ser executada no ambiente de produção. O servidor do Heroku está configurado para que sempre que este branch sofrer alterações, ser realizado o deploy no servidor.
 
 ## Referências Bibliográficas
 
